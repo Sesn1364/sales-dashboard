@@ -43,4 +43,49 @@ const addProduct = (req, res) => {
   );
 };
 
-module.exports = { getAllProducts, addProduct };
+// ویرایش یک محصول
+const updateProduct = (req, res) => {
+  const { id } = req.params;
+  const { name, price } = req.body;
+
+  if (!name || !price) {
+    return res.status(400).json({ message: 'Name and price are required' });
+  }
+
+  connection.query(
+    'UPDATE products SET name = ?, price = ? WHERE id = ?',
+    [name, price, id],
+    (err, result) => {
+      if (err) {
+        console.error('❌ Error updating product:', err);
+        return res.status(500).json({ message: 'Database error' });
+      }
+      if (result.affectedRows === 0) {
+        return res.status(404).json({ message: 'Product not found' });
+      }
+      res.json({ message: '✅ Product updated successfully' });
+    }
+  );
+};
+
+// حذف یک محصول
+const deleteProduct = (req, res) => {
+  const { id } = req.params;
+
+  connection.query(
+    'DELETE FROM products WHERE id = ?',
+    [id],
+    (err, result) => {
+      if (err) {
+        console.error('❌ Error deleting product:', err);
+        return res.status(500).json({ message: 'Database error' });
+      }
+      if (result.affectedRows === 0) {
+        return res.status(404).json({ message: 'Product not found' });
+      }
+      res.json({ message: '✅ Product deleted successfully' });
+    }
+  );
+};
+
+module.exports = { getAllProducts, addProduct, updateProduct, deleteProduct };
