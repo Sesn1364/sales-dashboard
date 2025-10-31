@@ -3,7 +3,7 @@ const express = require('express');
 const router = express.Router();
 const { getAllProducts, addProduct, updateProduct, deleteProduct } = require('../controllers/productController');
 
-// مسیر اصلی برای محصولات
+// مشاهده محصولات
 router.get('/', getAllProducts);
 
 // اضافه کردن محصول جدید
