@@ -2,26 +2,20 @@
 const express = require('express');
 const router = express.Router();
 const { getAllProducts, addProduct, updateProduct, deleteProduct } = require('../controllers/products/productController');
-const { registerUser, loginUser } = require('../controllers/users/userController');
 
-// مشاهده محصولات
+const authenticateToken = require('../middleware/authMiddleware');
+
+// مشاهده همه محصولات (عمومی)
 router.get('/', getAllProducts);
 
-// اضافه کردن محصول جدید
-router.post('/', addProduct);
+// اضافه کردن محصول جدید (فقط کاربران لاگین‌شده)
+router.post('/', authenticateToken, addProduct);
 
-// ویرایش محصول
-router.put('/:id', updateProduct);
+// ویرایش محصول (فقط کاربران لاگین‌شده)
+router.put('/:id', authenticateToken, updateProduct);
 
-// حذف محصول
-router.delete('/:id', deleteProduct);
+// حذف محصول (فقط کاربران لاگین‌شده)
+router.delete('/:id', authenticateToken, deleteProduct);
 
-
-
-// ثبت نام کاربران
-router.post('/register', registerUser);
-
-// ورود کاربران
-router.post('/login', loginUser);
 
 module.exports = router;
