@@ -6,8 +6,9 @@ require('dotenv').config();
 // اتصال به دیتابیس (فقط برای اطمینان از اتصال)
 const connection = require('./config/db');
 
-// ایمپورت مسیر محصولات
+// ایمپورت مسیرها
 const productRoutes = require('./routes/productRoutes');
+const userRoutes = require('./routes/userRoutes'); // 👈 مسیر کاربران
 
 const app = express();
 
@@ -20,7 +21,8 @@ app.get('/', (req, res) => {
   res.send('Backend is running ✅');
 });
 
-// مسیر اصلی برای API محصولات
+// مسیرهای اصلی API
 app.use('/api/products', productRoutes);
+app.use('/api/users', userRoutes); // 👈 اضافه شد
 
 module.exports = app;
